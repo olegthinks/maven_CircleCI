@@ -6,15 +6,9 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static helper.SeleniumUtil.*;
@@ -52,7 +46,8 @@ public class DriverFactory {
         logStringIntoConsole("***********************");
         logStringIntoConsole("**********************************************");
         logStringIntoConsole("***********************");
-        logStringIntoConsole("|***| Browser: " + TestProperty.BROWSER);
+        logStringIntoConsole("|***| Browser: " + BROWSER);
+
 
         if (doesStringContainSomeText(BROWSER, "firefox")) {
             logStringIntoConsole("Creating the instance of FIREFOX DRIVER...");
@@ -60,9 +55,9 @@ public class DriverFactory {
 
         } else if(doesStringContainSomeText(BROWSER, "chrome")) {
             logStringIntoConsole("Creating the instance of CHROME...");
-            final File file = new File("src/test/resources/chromedriver.exe");
 
-            System.setProperty("webdriver.chrome.driver", file.getAbsolutePath());
+            final File file = new File("chromedriver.exe");
+            //System.setProperty("webdriver.chrome.driver", file.toString());
 
             DesiredCapabilities capability = DesiredCapabilities.chrome();
             ChromeOptions options = new ChromeOptions();
@@ -94,7 +89,7 @@ public class DriverFactory {
             options.setExperimentalOption("prefs", prefs);
             capability.setCapability("chrome.binary", file.getAbsolutePath());
             capability.setCapability(ChromeOptions.CAPABILITY, options);
-            driver = new ChromeDriver(capability);
+            driver = new ChromeDriver();
 
         } else {
             try {
@@ -178,7 +173,6 @@ public class DriverFactory {
 	}*/
 
     public static void closeBrowser() {
-
         driver.close();
     }
 
@@ -208,6 +202,56 @@ public class DriverFactory {
 
     public static void setDriverToConfigWaitingTime(int seconds) {
         driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
+    }
+
+    public static void closeAllBrowsers() {
+        logStringIntoConsole("......calling 'helper.SeleniumUtil.closeAllBrowsers' as test class completed.");
+
+        try {
+            if (!(driver == null)) {
+                Set<String> handles = driver.getWindowHandles();
+                Iterator<String> handleIt = handles.iterator();
+
+                while (handleIt.hasNext()) {
+                    String handle = handleIt.next();
+                    driver.switchTo().window(handle);
+                    DriverFactory.closeBrowser();
+                }
+            }
+
+            //killChromeDriver();
+        } catch (Exception e) {
+        }
+    }
+
+    /**
+     * Windows
+     */
+    public static void killChromeDriver() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        // Windows
+        System.out.println();
+        processBuilder.command("cmd.exe", "/c", "taskkill /F /IM chromedriver.exe /T");
+
+        try {
+            Process process = processBuilder.start();
+
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            int exitCode = process.waitFor();
+            System.out.println("\nExited with error code : " + exitCode);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

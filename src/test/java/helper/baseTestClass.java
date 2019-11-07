@@ -3,24 +3,15 @@ package helper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
-import org.testng.Reporter;
 import org.testng.annotations.*;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-
-import static helper.SeleniumUtil.closeAllBrowsers;
+import static helper.DriverFactory.closeAllBrowsers;
 import static helper.SeleniumUtil.logStringIntoConsole;
-import static org.testng.ITestResult.FAILURE;
 
 /**
  * TESTS
@@ -58,7 +49,7 @@ public class baseTestClass {
 
     @BeforeTest()
     public void _ensureNoPreviousSessionsOfWebDriver() {
-        closeAllBrowsers();
+        //closeAllBrowsers();
 
         testStartTime = System.nanoTime();
     }

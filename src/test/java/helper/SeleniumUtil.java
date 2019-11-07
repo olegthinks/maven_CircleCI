@@ -1,24 +1,23 @@
 package helper;
 
-import static helper.DriverFactory.*;
-import static helper.TestProperty.WAITING_TIME;
-import static helper.UtilityMethods.doesStringContainSomeText;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Reporter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+import static helper.DriverFactory.driver;
+import static helper.DriverFactory.setDriverToConfigWaitingTime;
+import static helper.TestProperty.WAITING_TIME;
+import static helper.UtilityMethods.doesStringContainSomeText;
 
 
 public class SeleniumUtil {
@@ -1398,13 +1397,13 @@ public class SeleniumUtil {
         return element.isSelected();
     }
 
-    public static void logStringIntoConsole(String textToLog) {
-        logStringIntoConsole(textToLog);
+    public static void logStringIntoConsole(String textToLog){
+        logger.info(textToLog);
     }
 
-    public static void logError(String textToLog) {
+    public static void logError(String textToLog){
         logStringIntoConsole("  **  ERROR  **");
-        logError(textToLog + " | ** ERROR **");
+        logger.error(textToLog + " | ** ERROR **");
         logStringIntoConsole("  **  ERROR  **");
     }
 
@@ -1412,54 +1411,5 @@ public class SeleniumUtil {
         logStringIntoConsole("** Refreshing Page **");
         driver.navigate().refresh();
 
-    }
-
-    public static void closeAllBrowsers() {
-        logStringIntoConsole("......calling 'helper.SeleniumUtil.closeAllBrowsers' as test class completed.");
-
-        try {
-            if (!(driver == null)) {
-                Set<String> handles = driver.getWindowHandles();
-                Iterator<String> handleIt = handles.iterator();
-
-
-                while (handleIt.hasNext()) {
-                    String handle = handleIt.next();
-                    driver.switchTo().window(handle);
-                    DriverFactory.closeBrowser();
-                }
-            }
-
-            killChromeDriver();
-        } catch (Exception e) {
-        }
-    }
-
-    public static void killChromeDriver() {
-        ProcessBuilder processBuilder = new ProcessBuilder();
-        // Windows
-        System.out.println();
-        processBuilder.command("cmd.exe", "/c", "taskkill /F /IM chromedriver.exe /T");
-
-        try {
-
-            Process process = processBuilder.start();
-
-            BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-
-            int exitCode = process.waitFor();
-            System.out.println("\nExited with error code : " + exitCode);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

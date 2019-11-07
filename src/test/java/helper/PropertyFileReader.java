@@ -9,10 +9,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
-import static jdk.internal.net.http.common.Log.logError;
-
+/**
+ * <h1>This class is used to read a PROPERTY file</h1><p>
+ *
+ */
 public class PropertyFileReader {
+
     /** Logger to log the Driver Factory log messages */
+    private static Logger logger = LogManager.getLogger(PropertyFileReader.class);
+
     public String returnPropVal(final String propertyFileName, final String key) {
 
         // get a new properties object:
@@ -29,10 +34,10 @@ public class PropertyFileReader {
                 value = properties.getProperty(key);
 
             } catch (final FileNotFoundException e) {
-                logError("The file was not found at "+"/src/test/resouces"+ propertyFileName + ".properties", e);
+                logger.error("The file was not found at "+"/src/test/resouces"+ propertyFileName + ".properties", e);
 
             } catch (final IOException e) {
-                logError("IOException was found in returnPropVal method", e);
+                logger.error("IOException was found in returnPropVal method", e);
             }
         }
         return value;
@@ -54,13 +59,14 @@ public class PropertyFileReader {
                 properties.load(new FileInputStream(new File(System.getProperty("user.dir")+ "/src/test/resources/automation.properties")));
 
             } catch (final FileNotFoundException e) {
-                //logError("The file was not found at " + "../config/"+ propertyFileName + ".properties", e);
-                logError("The file was not found at " + "/src/test/resources"+ propertyFileName + ".properties", e);
+                //logger.error("The file was not found at " + "../config/"+ propertyFileName + ".properties", e);
+                logger.error("The file was not found at " + "/src/test/resources"+ propertyFileName + ".properties", e);
 
             } catch (final IOException e) {
-                logError("IOException was found in returnProperties method", e);
+                logger.error("IOException was found in returnProperties method", e);
             }
         }
         return properties;
     }
+
 }
