@@ -2,6 +2,7 @@ package tests;
 
 import apiAffiliated.AuthPayload;
 import apiAffiliated.BookingResponse;
+import helperClasses.BaseTestClass;
 import io.restassured.RestAssured;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.Header;
@@ -12,7 +13,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class APITests {
+public class APITests extends BaseTestClass {
 
     @Test
     public void myFirstRaTest(){
