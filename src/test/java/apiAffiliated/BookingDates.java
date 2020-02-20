@@ -1,4 +1,4 @@
-package APIAffiliated;
+package apiAffiliated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

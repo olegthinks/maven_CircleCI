@@ -1,4 +1,4 @@
-package HelperClasses;
+package helperClasses;
 
 public class TestRailAPIClient {
 }

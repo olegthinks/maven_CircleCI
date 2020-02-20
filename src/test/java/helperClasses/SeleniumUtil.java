@@ -1,4 +1,4 @@
-package HelperClasses;
+package helperClasses;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,10 +14,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static HelperClasses.DriverFactory.driver;
-import static HelperClasses.DriverFactory.setDriverToConfigWaitingTime;
-import static HelperClasses.TestProperty.WAITING_TIME;
-import static HelperClasses.UtilityMethods.doesStringContainSomeText;
+import static helperClasses.DriverFactory.driver;
+import static helperClasses.DriverFactory.setDriverToConfigWaitingTime;
+import static helperClasses.TestProperty.WAITING_TIME;
+import static helperClasses.UtilityMethods.doesStringContainSomeText;
 
 
 public class SeleniumUtil {

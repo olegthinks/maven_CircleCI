@@ -1,4 +1,4 @@
-package HelperClasses;
+package helperClasses;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,9 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static HelperClasses.SeleniumUtil.*;
-import static HelperClasses.TestProperty.*;
-import static HelperClasses.UtilityMethods.doesStringContainSomeText;
+import static helperClasses.SeleniumUtil.*;
+import static helperClasses.TestProperty.*;
+import static helperClasses.UtilityMethods.doesStringContainSomeText;
 
 public class DriverFactory {
     /**

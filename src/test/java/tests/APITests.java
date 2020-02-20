@@ -1,7 +1,7 @@
 package tests;
 
-import APIAffiliated.AuthPayload;
-import APIAffiliated.BookingResponse;
+import apiAffiliated.AuthPayload;
+import apiAffiliated.BookingResponse;
 import io.restassured.RestAssured;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.Header;

@@ -1,4 +1,4 @@
-package HelperClasses;
+package helperClasses;
 
 
 import org.apache.logging.log4j.LogManager;
@@ -10,8 +10,8 @@ import org.testng.annotations.*;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
-import static HelperClasses.DriverFactory.closeAllBrowsers;
-import static HelperClasses.SeleniumUtil.logStringIntoConsole;
+import static helperClasses.DriverFactory.closeAllBrowsers;
+import static helperClasses.SeleniumUtil.logStringIntoConsole;
 
 /**
  * TESTS

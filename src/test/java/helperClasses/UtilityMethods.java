@@ -1,4 +1,4 @@
-package HelperClasses;
+package helperClasses;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -26,8 +26,8 @@ import java.security.SecureRandom;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static HelperClasses.SeleniumUtil.logError;
-import static HelperClasses.SeleniumUtil.logStringIntoConsole;
+import static helperClasses.SeleniumUtil.logError;
+import static helperClasses.SeleniumUtil.logStringIntoConsole;
 
 /**
  * <h1>This class has all the utility methods which are used by the Page Classes

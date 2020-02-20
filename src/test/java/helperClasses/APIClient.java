@@ -1,4 +1,4 @@
-package HelperClasses;
+package helperClasses;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;

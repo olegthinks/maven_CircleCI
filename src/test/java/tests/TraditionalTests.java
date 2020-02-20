@@ -1,12 +1,12 @@
 package tests;
 
-import HelperClasses.DriverFactory;
-import HelperClasses.BaseTestClass;
+import helperClasses.DriverFactory;
+import helperClasses.BaseTestClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import static HelperClasses.SeleniumUtil.logStringIntoConsole;
-import static HelperClasses.TestProperty.URL;
+import static helperClasses.SeleniumUtil.logStringIntoConsole;
+import static helperClasses.TestProperty.URL;
 
 public class TraditionalTests extends BaseTestClass {
     @BeforeTest

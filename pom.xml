@@ -18,8 +18,8 @@
                 <version>3.1</version>
                 <configuration>
                     <encoding>iso-8859-1</encoding>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>1.13</source>
+                    <target>1.13</target>
                 </configuration>
             </plugin>
             <!-- Below plug-in is used to execute tests -->
@@ -29,7 +29,7 @@
                 <version>2.18.1</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/_testSuites/${testXml}</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/testSuites/tests.xml</suiteXmlFile>
                     </suiteXmlFiles>
                 </configuration>
                 <executions>
