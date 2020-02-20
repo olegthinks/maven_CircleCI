@@ -5,6 +5,7 @@ import apiAffiliated.BookingResponse;
 import helperClasses.BaseTestClass;
 import io.restassured.RestAssured;
 import io.restassured.config.RestAssuredConfig;
+import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 
 public class APITests extends BaseTestClass {
 
@@ -63,4 +65,33 @@ public class APITests extends BaseTestClass {
 
         assertThat(authResponse, containsString("token"));
     }
+
+    @Test
+    public void test_NumberOfCircuitsFor2017Season_ShouldBe20() {
+
+        given().
+                when().
+                get("http://ergast.com/api/f1/2017/circuits.json").
+                then().
+                assertThat().
+                body("MRData.CircuitTable.Circuits.circuitId",hasSize(20));
+    }
+
+    @Test
+    public void test_ResponseHeaderData_ShouldBeCorrect() {
+
+        given().
+                when().
+                get("http://ergast.com/api/f1/2017/circuits.json").
+                then().
+                assertThat().
+                statusCode(200).
+                and().
+                contentType(ContentType.JSON).
+                and().
+                header("Content-Length",equalTo("4567"));
+    }
+
+
+
 }

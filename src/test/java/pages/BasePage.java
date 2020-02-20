@@ -14,4 +14,5 @@ public class BasePage {
     /**
      * Methods
      */
+
 }
