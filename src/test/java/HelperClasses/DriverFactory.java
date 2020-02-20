@@ -1,4 +1,4 @@
-package helper;
+package HelperClasses;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,9 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static helper.SeleniumUtil.*;
-import static helper.TestProperty.*;
-import static helper.UtilityMethods.doesStringContainSomeText;
+import static HelperClasses.SeleniumUtil.*;
+import static HelperClasses.TestProperty.*;
+import static HelperClasses.UtilityMethods.doesStringContainSomeText;
 
 public class DriverFactory {
     /**
@@ -56,8 +56,8 @@ public class DriverFactory {
         } else if(doesStringContainSomeText(BROWSER, "chrome")) {
             logStringIntoConsole("Creating the instance of CHROME...");
 
-            final File file = new File("chromedriver.exe");
-            //System.setProperty("webdriver.chrome.driver", file.toString());
+            final File file = new File("C://Users//oandr//Documents//Source//webdrivers//chromedriver//chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", file.toString());
 
             DesiredCapabilities capability = DesiredCapabilities.chrome();
             ChromeOptions options = new ChromeOptions();

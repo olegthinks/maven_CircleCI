@@ -1,12 +1,12 @@
-package helper;
+package HelperClasses;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import static helper.SeleniumUtil.logError;
-import static helper.SeleniumUtil.logStringIntoConsole;
+import static HelperClasses.SeleniumUtil.logError;
+import static HelperClasses.SeleniumUtil.logStringIntoConsole;
 
 
 public class DateUtil {

@@ -1,9 +1,7 @@
-package helper;
+package HelperClasses;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -28,8 +26,8 @@ import java.security.SecureRandom;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static helper.SeleniumUtil.logError;
-import static helper.SeleniumUtil.logStringIntoConsole;
+import static HelperClasses.SeleniumUtil.logError;
+import static HelperClasses.SeleniumUtil.logStringIntoConsole;
 
 /**
  * <h1>This class has all the utility methods which are used by the Page Classes

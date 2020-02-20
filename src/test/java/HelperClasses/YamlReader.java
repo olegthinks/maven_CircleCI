@@ -1,4 +1,4 @@
-package helper;
+package HelperClasses;
 
 import com.fasterxml.jackson.dataformat.yaml.snakeyaml.Yaml;
 
@@ -9,9 +9,9 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import static helper.SeleniumUtil.logError;
-import static helper.SeleniumUtil.logStringIntoConsole;
-import static helper.UtilityMethods.doesStringContainSomeText;
+import static HelperClasses.SeleniumUtil.logError;
+import static HelperClasses.SeleniumUtil.logStringIntoConsole;
+import static HelperClasses.UtilityMethods.doesStringContainSomeText;
 
 
 public class YamlReader {

@@ -1,4 +1,4 @@
-package helper;
+package HelperClasses;
 
 
 import org.apache.logging.log4j.LogManager;
@@ -10,8 +10,8 @@ import org.testng.annotations.*;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
-import static helper.DriverFactory.closeAllBrowsers;
-import static helper.SeleniumUtil.logStringIntoConsole;
+import static HelperClasses.DriverFactory.closeAllBrowsers;
+import static HelperClasses.SeleniumUtil.logStringIntoConsole;
 
 /**
  * TESTS
@@ -28,7 +28,7 @@ import static helper.SeleniumUtil.logStringIntoConsole;
  10. Unable to Locate
  */
 
-public class baseTestClass {
+public class BaseTestClass {
     long classStartTime;
     long classEndTime;
     long classDurationInSeconds;
@@ -39,7 +39,7 @@ public class baseTestClass {
     long methodEndTime;
     long methodDurationInSeconds;
 
-    private static Logger logger = LogManager.getLogger(baseTestClass.class);
+    private static Logger logger = LogManager.getLogger(BaseTestClass.class);
 
     @BeforeGroups("smoke")
     public void _startSmokeTests() {
