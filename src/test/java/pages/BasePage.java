@@ -1,6 +1,8 @@
 package pages;
 
-public class BasePage {
+import helperClasses.SeleniumUtil;
+
+public class BasePage extends SeleniumUtil {
     /**
      * Properties
      */

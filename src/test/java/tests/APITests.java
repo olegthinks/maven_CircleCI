@@ -15,7 +15,25 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 
+
+/**
+ * Documentation: https://github.com/rest-assured/rest-assured/wiki/Usage
+ */
 public class APITests extends BaseTestClass {
+
+    @Test
+    public void checkCityForZipCode() {
+
+        given().
+                pathParam("country","us").
+                pathParam("zipcode","90210").
+                when().
+                get("http://api.zippopotam.us/{country}/{zipcode}").
+                then().
+                assertThat().
+                body("places.'place name'[0]",equalTo("Beverly Hills"));
+    }
+
 
     @Test
     public void myFirstRaTest(){
@@ -89,7 +107,7 @@ public class APITests extends BaseTestClass {
                 and().
                 contentType(ContentType.JSON).
                 and().
-                header("Content-Length",equalTo("4567"));
+                header("Content-Length",equalTo("4551"));
     }
 
 

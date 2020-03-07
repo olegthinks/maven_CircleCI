@@ -8,6 +8,10 @@ import static io.restassured.RestAssured.given;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+
+/**
+ * Wiki RestAssured - https://github.com/rest-assured/rest-assured/wiki/Usage
+ */
 public class APIInterrogator {
 
 

@@ -123,6 +123,8 @@ public class BaseTestClass {
 
 
         String testName = ctx.getCurrentXmlTest().getName();
+
+
     }
 
 
