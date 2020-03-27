@@ -1,7 +1,5 @@
-image: "circleci/openjdk:8-jdk"
-maven-build:
-  image: "maven:latest"
-  script: "mvn test"
-  stage: build
-stages:
-  - build
+image: maven:3.5.3-jdk-8
+
+build_and_test:
+  script:
+    - mvn test
