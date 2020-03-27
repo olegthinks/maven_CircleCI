@@ -24,7 +24,6 @@ jobs:
       - checkout
 
       # Download and cache dependencies
-
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "pom.xml" }}
@@ -52,13 +51,11 @@ jobs:
             sudo apt-get -y install xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable
             sudo apt-get install xvfb
             sudo apt-get -y install imagemagick x11-apps
-      - run:
-          name: Running X virtual framebuffer
-          command: Xvfb :0 -ac &
 
       - run:
-          name: Run Tests
+          name: Test Setup
           command: |
+            Xvfb :0 -ac &
             export DISPLAY=:99
       - save_cache:
           paths:
@@ -66,13 +63,16 @@ jobs:
           key: v1-dependencies-{{ checksum "pom.xml" }}
 
       # run tests!
-      - run: mvn test
+      - run:
+          name: Run Tests
+          command:
+            mvn test
 
+
+      # store artifacts and results
       - store_artifacts:
           path: target/surefire-reports
-          destination: tr1
       - store_artifacts:
           path: test-output
-          destination: tr1
       - store_test_results:
           path: target/surefire-reports
