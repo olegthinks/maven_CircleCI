@@ -12,7 +12,7 @@ before_script:
   - "sudo apt-get -y install imagemagick x11-apps"
   - "Xvfb :0 -ac &"
   - "export DISPLAY=:99"
-image: "docker:latest"
+image: "circleci/openjdk:8-jdk"
 maven-build:
   image: "maven:latest"
   script: "mvn test"
