@@ -2,7 +2,6 @@ image: circleci/openjdk:8-jdk
 
 build_and_test:
   script:
-    - checkout
     - mvn dependency:go-offline
     - sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
     - sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
