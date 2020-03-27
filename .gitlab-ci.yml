@@ -1,0 +1,14 @@
+before_script:
+  - "apt-get update"
+  - "export DISPLAY=:1"
+image: "docker:latest"
+maven-build:
+  image: "maven:latest"
+  script: "mvn test"
+  stage: build
+services:
+  - "docker:dind"
+  - "selenium/standalone-chrome:latest"
+stages:
+  - build
+  - test
