@@ -31,8 +31,9 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: mvn dependency:go-offline
+      - run:
           name: Resolve Maven Dependencies
+          command: mvn dependency:go-offline
 
       - run:
           name: Install latest version of Chrome
