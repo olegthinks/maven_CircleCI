@@ -1,7 +1,6 @@
 package helperClasses;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.kohsuke.rngom.parse.host.Base;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -14,21 +13,22 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static helperClasses.DriverFactory.driver;
-import static helperClasses.DriverFactory.setDriverToConfigWaitingTime;
+
+import static helperClasses.BaseTestClass.setDriverToConfigWaitingTime;
 import static helperClasses.TestProperty.WAITING_TIME;
-import static helperClasses.UtilityMethods.doesStringContainSomeText;
+import static helperClasses.UtilityMethods.*;
 
 
-public class SeleniumUtil {
-    private static Logger logger = LogManager.getLogger(SeleniumUtil.class);
+public class SeleniumUtil extends BaseTestClass {
     public static String s;
+
+
 
 
     //Methods
     public static void switchToDynamicFrame() {
         try {
-            DriverFactory.setDriverToConfigWaitingTime();
+            setDriverToConfigWaitingTime();
             microSleep();
             By dynamicFrame = By.cssSelector("div[style='display: block;'] iframe");
             switchToFrame(dynamicFrame);
@@ -38,7 +38,7 @@ public class SeleniumUtil {
             logStringIntoConsole("No Frame Found | During " + getCurrentMethodName());
         }
 
-        DriverFactory.setDriverToConfigWaitingTime();
+        setDriverToConfigWaitingTime();
     }
 
     public static void highlightElement(By element) {
@@ -55,12 +55,11 @@ public class SeleniumUtil {
             return;
         }
 
-
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0 ; i < 25 ; i++) {
             try {
                 microSleep();
             } catch (Exception e) {
-                System.out.println("caught");
+                logStringIntoConsole("Page Not Ready Yet!!!");
             }
             if (js.executeScript("return document.readyState").toString().equals("complete")) {
                 break;
@@ -71,10 +70,10 @@ public class SeleniumUtil {
     public static boolean doesElementExist(By elementLocator) {
         boolean result = false;
 
-        DriverFactory.setDriverToConfigWaitingTime();
+        setDriverToConfigWaitingTime();
 
         try {
-            logStringIntoConsole("......searching for �Element: " + elementLocator);
+            logStringIntoConsole("...searching for �Element: " + elementLocator);
             WebElement myDynamicElement = (new WebDriverWait(driver, 1))
                     .until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
             logStringIntoConsole("FOUND element.	| " + elementLocator);
@@ -86,8 +85,13 @@ public class SeleniumUtil {
         }
 
 
-        DriverFactory.setDriverToConfigWaitingTime();
+        setDriverToConfigWaitingTime();
         return result;
+    }
+
+    public static boolean verifyPageTitle(String expectedPageTitle) {
+        doesStringContainSomeText(driver.getTitle(), expectedPageTitle);
+        return driver.getTitle().contains(expectedPageTitle);
     }
 
     public static boolean doesElementExist(By elementIdentifier, int waitingTimeSec) {
@@ -96,7 +100,7 @@ public class SeleniumUtil {
 
 
         try {
-            logStringIntoConsole("......searching for Element: " + elementIdentifier);
+            logStringIntoConsole("...searching for Element: " + elementIdentifier);
             WebElement myDynamicElement = (new WebDriverWait(driver, waitingTimeSec))
                     .until(ExpectedConditions.visibilityOfElementLocated(elementIdentifier));
             logStringIntoConsole("FOUND element.	| " + elementIdentifier);
@@ -108,7 +112,7 @@ public class SeleniumUtil {
         }
 
 
-        DriverFactory.setDriverToConfigWaitingTime();
+        setDriverToConfigWaitingTime();
         return result;
     }
 
@@ -138,7 +142,7 @@ public class SeleniumUtil {
         switchToDynamicFrame();
 
         try {
-            logStringIntoConsole("......searching for �lement: " + elementLocator);
+            logStringIntoConsole("...searching for �lement: " + elementLocator);
             WebElement myDynamicElement = (new WebDriverWait(driver, waitingTimeSec))
                     .until(ExpectedConditions.visibilityOf(elementLocator));
             logStringIntoConsole("FOUND element.	| " + elementLocator);
@@ -163,7 +167,7 @@ public class SeleniumUtil {
 
 
         try {
-            logStringIntoConsole("......searching for �lement: " + elementLocator);
+            logStringIntoConsole("...searching for �lement: " + elementLocator);
             WebElement myDynamicElement = (new WebDriverWait(driver, 1))
                     .until(ExpectedConditions.visibilityOf(elementLocator));
             logStringIntoConsole("FOUND element.	| " + elementLocator);
@@ -180,11 +184,11 @@ public class SeleniumUtil {
     }
 
     public static boolean doesFrameExist(By frameLocator, int waitingTimeSec) {
-        DriverFactory.setDriverToConfigWaitingTime(waitingTimeSec);
+        setDriverToConfigWaitingTime(waitingTimeSec);
 
 
         try {
-            logStringIntoConsole("......searching for Frame: " + frameLocator);
+            logStringIntoConsole("...searching for Frame: " + frameLocator);
             switchToDefaultContent();
             WebElement myDynamicElement = (new WebDriverWait(driver, waitingTimeSec))
                     .until(ExpectedConditions.visibilityOfElementLocated(frameLocator));
@@ -1001,7 +1005,7 @@ public class SeleniumUtil {
         Select dropdown = new Select(element(elementIdentifier));
         for (WebElement option : dropdown.getOptions()) {
             String txt = option.getAttribute("value");
-            if(doesStringContainSomeText(txt, partialText)) {
+            if (doesStringContainSomeText(txt, partialText)) {
                 dropdown.selectByVisibleText(txt);
             }
         }
@@ -1334,9 +1338,7 @@ public class SeleniumUtil {
             new WebDriverWait(driver, WAITING_TIME).until((ExpectedCondition<Boolean>) wd ->
                     ((JavascriptExecutor) wd).executeScript("return document.readyState").equals("complete"));
         } catch (Exception error) {
-            System.out.println();
-            System.out.println("Page **NOT** loaded after waiting '" + WAITING_TIME + "' seconds! | 'waitUntilPageLoaded' not finished.");
-            System.out.println();
+            logError("Page **NOT** loaded after waiting '" + WAITING_TIME + "' seconds! | 'waitUntilPageLoaded' not finished.");
         }
     }
 
@@ -1395,16 +1397,6 @@ public class SeleniumUtil {
     public static boolean isElementSelected(WebElement element) {
 
         return element.isSelected();
-    }
-
-    public static void logStringIntoConsole(String textToLog){
-        logger.info(textToLog);
-    }
-
-    public static void logError(String textToLog){
-        logStringIntoConsole("  **  ERROR  **");
-        logger.error(textToLog + " | ** ERROR **");
-        logStringIntoConsole("  **  ERROR  **");
     }
 
     public static void refreshPage() {

@@ -3,32 +3,34 @@ package helperClasses;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static helperClasses.DriverFactory.closeAllBrowsers;
-import static helperClasses.SeleniumUtil.logStringIntoConsole;
+import static helperClasses.SeleniumUtil.getCurrentMethodName;
+import static helperClasses.TestProperty.*;
+import static helperClasses.UtilityMethods.*;
+import static helperClasses.UtilityMethods.doesStringContainSomeText;
 
-/**
- * TESTS
- *
- 1. BA - Program configuration - create/update
- 2. BA - Sponsor Configuration - create/update
- 3. CSR, Health Coach - IHA Assessment for single condition -  smoking cessation
- 4. Health Coach - Baseline Assessment(Care plan as well)
- 5. Health Coach - Follow up Assessment
- 6. CSR, Health Coach - Fulfillment request
- 7. Clinical Assistant - Research task
- 8. Member 360 - Demographic update.
- 9. Member Enrollment, Disenrollment & Reinstatement - includes batch process etc...
- 10. Unable to Locate
- */
 
 public class BaseTestClass {
+    private static ChromeDriverService service;
+    public static WebDriver driver;
+
     long classStartTime;
     long classEndTime;
     long classDurationInSeconds;
@@ -39,17 +41,126 @@ public class BaseTestClass {
     long methodEndTime;
     long methodDurationInSeconds;
 
-    private static Logger logger = LogManager.getLogger(BaseTestClass.class);
+    public static void createDriver() {
+        logStringIntoConsole("**********************************************");
+        logStringIntoConsole("***********************");
+        logStringIntoConsole("**********************************************");
+        logStringIntoConsole("***********************");
+        logStringIntoConsole("|***| Browser: " + BROWSER);
 
-    @BeforeGroups("smoke")
-    public void _startSmokeTests() {
-        logger.info("Starting the SMOKE TEST run...");
+
+        if (doesStringContainSomeText(BROWSER, "firefox")) {
+            logStringIntoConsole("Creating the instance of FIREFOX DRIVER...");
+            driver = new FirefoxDriver();
+
+        } else if (doesStringContainSomeText(BROWSER, "chrome")) {
+            logStringIntoConsole("Creating the instance of CHROME...");
+
+
+            ChromeOptions options = new ChromeOptions();
+            logStringIntoConsole("***CHECKING WHETHER TO RUN IN HEADLESS MODE");
+            if (HEADLESS.equalsIgnoreCase("true")) {
+                logStringIntoConsole(HEADLESS);
+                options.addArguments("headless");
+                options.addArguments("--disable-gpu");
+                logStringIntoConsole("Argument 'headless' and 'disable-gpu' ADDED to ChromeOptions.");
+            } else {
+                logStringIntoConsole("Argument 'headless' SKIPPED.");
+            }
+            options.addArguments("test-type=browser");
+            options.addArguments("--disable-web-security");
+            options.addArguments("--no-proxy-server");
+            options.addArguments("no-sandbox");
+
+            //Window Size
+            //options.addArguments("--window-size=904,768");
+            options.addArguments("--start-maximized");
+
+            options.addArguments("--ignore-certificate-errors");
+            //options.addArguments("--incognito");
+            options.addArguments("--enable-precise-memory-info");
+            options.addArguments("--disable-geolocation");
+
+            Map<String, Object> prefs = new HashMap<String, Object>();
+            prefs.put("credentials_enable_service", false);
+            prefs.put("profile.password_manager_enabled", false);
+            options.setExperimentalOption("prefs", prefs);
+
+
+            driver = new RemoteWebDriver(service.getUrl(), options);
+        } else {
+            try {
+                throw new Exception(TestProperty.BROWSER + " NOT supported.  Choose either Firefox or Chrome.");
+            } catch (Exception e) {
+                logError("The requested browser is NOT supported! Choose either Firefox or Chrome.");
+            }
+        }
+    }
+
+    public static void openURL(String url) {
+        createDriver();
+
+        logStringIntoConsole("URL: " + url);
+
+
+        driver.get(url);
+        driver.manage().timeouts().implicitlyWait(WAITING_TIME, TimeUnit.SECONDS);
+
+        logStringIntoConsole("...completed OpenURL | " + getCurrentMethodName());
+    }
+
+    public static void closeBrowser() {
+        driver.close();
+    }
+
+    public static void setDriverToConfigWaitingTime() {
+        driver.manage().timeouts().implicitlyWait(WAITING_TIME, TimeUnit.SECONDS);
+    }
+
+    public static void setDriverToConfigWaitingTime(int seconds) {
+        driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
+    }
+
+    public static void closeAllBrowsers() {
+        logStringIntoConsole("......calling 'helper.SeleniumUtil.closeAllBrowsers' as test class completed.");
+
+        try {
+            if (!(driver == null)) {
+                Set<String> handles = driver.getWindowHandles();
+                Iterator<String> handleIt = handles.iterator();
+
+                while (handleIt.hasNext()) {
+                    String handle = handleIt.next();
+                    driver.switchTo().window(handle);
+                    closeBrowser();
+                }
+            }
+
+            //killChromeDriver();
+        } catch (Exception e) {
+        }
     }
 
 
+    @BeforeGroups("smoke")
+    public void _startSmokeTests() {
+        logStringIntoConsole("Starting the SMOKE TEST run...");
+    }
+
     @BeforeTest()
-    public void _ensureNoPreviousSessionsOfWebDriver() {
-        //closeAllBrowsers();
+    public void startDriverService() {
+        final File file = new File(System.getProperty("user.dir") + "/src/test/resources/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", file.toString());
+
+        try {
+            service = new ChromeDriverService.Builder()
+                    .usingDriverExecutable(new File(file.toString()))
+                    .usingAnyFreePort()
+                    .build();
+            service.start();
+        } catch (IOException e) {
+            logError(e.toString());
+        }
 
         testStartTime = System.nanoTime();
     }
@@ -103,9 +214,9 @@ public class BaseTestClass {
         String classPath = this.getClass().getName();
 
 
-
-        closeAllBrowsers();
     }
+
+
 
     protected boolean hasClassFailedTests(ITestContext context) {
         Class clazz = this.getClass();
@@ -125,12 +236,14 @@ public class BaseTestClass {
         String testName = ctx.getCurrentXmlTest().getName();
 
 
+        closeAllBrowsers();
+        service.stop();
     }
 
 
     @AfterGroups("smoke")
     public void _teardownSmokeTests() {
-        logger.info("Completed the SMOKE TEST run...");
+      logStringIntoConsole("Completed the SMOKE TEST run...");
     }
 }
 

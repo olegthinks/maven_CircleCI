@@ -9,9 +9,9 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import static helperClasses.SeleniumUtil.logError;
-import static helperClasses.SeleniumUtil.logStringIntoConsole;
 import static helperClasses.UtilityMethods.doesStringContainSomeText;
+import static helperClasses.UtilityMethods.logError;
+import static helperClasses.UtilityMethods.logStringIntoConsole;
 
 
 public class YamlReader {
@@ -60,7 +60,7 @@ public class YamlReader {
         logStringIntoConsole("Key: " + token + " | Value: " + result);
 
 
-        if(result.equalsIgnoreCase("TRUE") | result.equalsIgnoreCase("FALSE")) {
+        if (result.equalsIgnoreCase("TRUE") | result.equalsIgnoreCase("FALSE")) {
             logError("**NOTE**  True/False returned as value!  **NOTE** ");
         }
         return result;
@@ -68,7 +68,7 @@ public class YamlReader {
 
     @SuppressWarnings("unchecked")
     private static Map<String, Object> parseMap(Map<String, Object> object,String token) {
-        if(doesStringContainSomeText(token, ".")) {
+        if (doesStringContainSomeText(token, ".")) {
             String[] st = token.split("\\.");
             object = parseMap((Map<String, Object>) object.get(st[0]),token.replace(st[0] + ".", ""));
         }

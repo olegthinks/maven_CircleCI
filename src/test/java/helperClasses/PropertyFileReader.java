@@ -27,7 +27,7 @@ public class PropertyFileReader {
             try {
 
                 //properties.load(new FileInputStream(new File("../config/"+ propertyFileName + ".properties")));
-                properties.load(new FileInputStream(new File(System.getProperty("user.dir")+ "/src/test/resources/automation.properties")));
+                properties.load(new FileInputStream(new File(System.getProperty("user.dir") + "/src/test/resources/automation.properties")));
 
 
                 // get PROPERTY value based on key:

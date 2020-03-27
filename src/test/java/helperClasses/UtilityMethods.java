@@ -2,6 +2,8 @@ package helperClasses;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -26,8 +28,6 @@ import java.security.SecureRandom;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static helperClasses.SeleniumUtil.logError;
-import static helperClasses.SeleniumUtil.logStringIntoConsole;
 
 /**
  * <h1>This class has all the utility methods which are used by the Page Classes
@@ -36,9 +36,20 @@ import static helperClasses.SeleniumUtil.logStringIntoConsole;
 
  */
 public class UtilityMethods {
-
     private static final String TASKLIST = "tasklist";
     private static final String KILL = "taskkill /F /IM ";
+
+
+    private static Logger logger = LogManager.getLogger();
+    public static void logStringIntoConsole(String textToLog){
+        logger.info(textToLog);
+    }
+    public static void logError(String textToLog){
+        logStringIntoConsole("  **  ERROR  **");
+        logger.error(textToLog + " | ** ERROR **");
+        logStringIntoConsole("  **  ERROR  **");
+    }
+
 
     /**
      * Random String Generator
@@ -52,7 +63,7 @@ public class UtilityMethods {
 
     public static String returnRandomString(int len) {
         StringBuilder sb = new StringBuilder(len);
-        for(int i = 0; i < len; i++)
+        for (int i = 0; i < len; i++)
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
     }
@@ -67,33 +78,33 @@ public class UtilityMethods {
 
     public static String randomNumericString(int len) {
         StringBuilder sb = new StringBuilder(len);
-        for(int i = 0; i < len; i++)
+        for (int i = 0; i < len; i++)
             sb.append(numeric.charAt(rnd.nextInt(numeric.length())));
         return sb.toString();
     }
 
     public static String randomNumericString(String len) {
-        int length = Integer.valueOf(len);
+        int length = Integer.parseInt(len);
 
         StringBuilder sb = new StringBuilder(len);
-        for(int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
             sb.append(numeric.charAt(rnd.nextInt(numeric.length())));
         return sb.toString();
     }
 
     public static String randomNumericStringExcludeZero(int len) {
         StringBuilder sb = new StringBuilder(len);
-        for(int i = 0; i < len; i++)
+        for (int i = 0; i < len; i++)
             sb.append(numericExcludingZero.charAt(rnd.nextInt(numericExcludingZero.length())));
         logStringIntoConsole("Random Numeric String: " + sb.toString());
         return sb.toString();
     }
 
     public static String randomNumericStringExcludeZero(String len) {
-        int length = Integer.valueOf(len);
+        int length = Integer.parseInt(len);
 
         StringBuilder sb = new StringBuilder(len);
-        for(int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
             sb.append(numericExcludingZero.charAt(rnd.nextInt(numericExcludingZero.length())));
         logStringIntoConsole("Random Numeric String: " + sb.toString());
         return sb.toString();
@@ -288,7 +299,7 @@ public class UtilityMethods {
         boolean flag = false;
         for (String key1 : map1.keySet()) {
             if (map2.get(key1)!=null){
-                if(map1.get(key1).trim().contains((map2.get(key1).trim()))){
+                if (map1.get(key1).trim().contains((map2.get(key1).trim()))){
                     flag=true;
                 } else {
                     logStringIntoConsole("The key values NOT matches for - " + key1);
@@ -319,7 +330,7 @@ public class UtilityMethods {
         shorterString = "" + shorterString.trim().toUpperCase();
         //logStringIntoConsole("Short String: " + shorterString);
 
-        if(longerString.contains(shorterString)){
+        if (longerString.contains(shorterString)){
             logStringIntoConsole("Yes, '" + longerString + "' contains '" + shorterString + "'....");
             result = true;
         } else {
@@ -336,7 +347,7 @@ public class UtilityMethods {
         shorterString = "" + shorterString.trim().toUpperCase();
 
 
-        if(longerString.contains(shorterString)){
+        if (longerString.contains(shorterString)){
             result = true;
         } else {
         }
@@ -545,7 +556,7 @@ public class UtilityMethods {
 
 
     public static boolean returnRandomBoolean() {
-        if((Math.random() < 0.5)){
+        if ((Math.random() < 0.5)){
             logStringIntoConsole("Random Boolean = TRUE");
             return true;
         } else {

@@ -1,19 +1,23 @@
 package helperClasses;
 
+import com.sun.xml.xsom.impl.util.Uri;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static helperClasses.BaseTestClass.createDriver;
 import static helperClasses.SeleniumUtil.*;
 import static helperClasses.TestProperty.*;
-import static helperClasses.UtilityMethods.doesStringContainSomeText;
+import static helperClasses.UtilityMethods.*;
 
 public class DriverFactory {
     /**
@@ -21,13 +25,13 @@ public class DriverFactory {
      * required driver instance
      */
     /** Webdriver instance to create a webdriver */
-    public static WebDriver driver;
 
 
 
-    public DriverFactory(WebDriver driver){
-        DriverFactory.driver = driver;
-    }
+
+
+
+
     /**
      * This method is called by the test classes to create a driver
      public static void getDriverInstance() {
@@ -41,77 +45,12 @@ public class DriverFactory {
      *
 
      */
-    public static void createDriver() {
-        logStringIntoConsole("**********************************************");
-        logStringIntoConsole("***********************");
-        logStringIntoConsole("**********************************************");
-        logStringIntoConsole("***********************");
-        logStringIntoConsole("|***| Browser: " + BROWSER);
 
-
-        if (doesStringContainSomeText(BROWSER, "firefox")) {
-            logStringIntoConsole("Creating the instance of FIREFOX DRIVER...");
-            driver = new FirefoxDriver();
-
-        } else if(doesStringContainSomeText(BROWSER, "chrome")) {
-            logStringIntoConsole("Creating the instance of CHROME...");
-
-            final File file = new File("C://Users//oandr//Documents//Source//webdrivers//chromedriver//chromedriver.exe");
-            System.setProperty("webdriver.chrome.driver", file.toString());
-
-            DesiredCapabilities capability = DesiredCapabilities.chrome();
-            ChromeOptions options = new ChromeOptions();
-            logStringIntoConsole("***CHECKING WHETHER TO RUN IN HEADLESS MODE");
-            if(HEADLESS.equalsIgnoreCase("true")) {
-                logStringIntoConsole(HEADLESS);
-                options.addArguments("headless");
-                logStringIntoConsole("Argument 'headless' ADDED to ChromeOptions.");
-            } else {
-                logStringIntoConsole("Argument 'headless' SKIPPED.");
-            }
-            options.addArguments("test-type=browser");
-            options.addArguments("--disable-web-security");
-            options.addArguments("--no-proxy-server");
-
-            //Window Size
-            //options.addArguments("--window-size=904,768");
-            options.addArguments("--start-maximized");
-
-            options.addArguments("--ignore-certificate-errors");
-            //options.addArguments("--incognito");
-            options.addArguments("--enable-precise-memory-info");
-            options.addArguments("--disable-geolocation");
-            capability.setCapability("chrome.binary", file.getAbsolutePath());
-            capability.setCapability(ChromeOptions.CAPABILITY, options);
-            Map<String, Object> prefs = new HashMap<String, Object>();
-            prefs.put("credentials_enable_service", false);
-            prefs.put("profile.password_manager_enabled", false);
-            options.setExperimentalOption("prefs", prefs);
-            capability.setCapability("chrome.binary", file.getAbsolutePath());
-            capability.setCapability(ChromeOptions.CAPABILITY, options);
-            driver = new ChromeDriver();
-
-        } else {
-            try {
-                throw new Exception(TestProperty.BROWSER +" NOT supported.  Choose either Firefox or Chrome.");
-            } catch (Exception e) {
-                logError("The requested browser is NOT supported! Choose either Firefox or Chrome.");
-            }
-        }
-    }
 
     /**
      * This method opens the test URL and sets the driver properties
      */
-    public static void openURL(String url) {
-        createDriver();
-        logStringIntoConsole("URL: " + url);
 
-        driver.get(url);
-        driver.manage().timeouts().implicitlyWait(WAITING_TIME, TimeUnit.SECONDS);
-
-        logStringIntoConsole("...completed OpenURL | " + getCurrentMethodName());
-    }
 
 
 
@@ -172,9 +111,7 @@ public class DriverFactory {
 		logStringIntoConsole("*** Finished executing Suite *** Clean Up ***" + getCurrentMethodName());
 	}*/
 
-    public static void closeBrowser() {
-        driver.close();
-    }
+
 
     public static String encodeScreenshotBase64(String imgPath) {
         String base64Img = "";
@@ -187,7 +124,7 @@ public class DriverFactory {
             base64Img = Base64.getEncoder().encodeToString(imgData);
 
         } catch (FileNotFoundException e) {
-            logError("The File is not found, in the embedScreenShotBase64 method of the driverFactory...");
+            logError("The File is not found, in the embedScreenShotBase64 method of the ..");
         } catch (IOException ioe) {
             logError("The file is not readable, screenshot will not be available" + ioe );
         }
@@ -196,33 +133,7 @@ public class DriverFactory {
         return base64Img;
     }
 
-    public static void setDriverToConfigWaitingTime() {
-        driver.manage().timeouts().implicitlyWait(WAITING_TIME, TimeUnit.SECONDS);
-    }
 
-    public static void setDriverToConfigWaitingTime(int seconds) {
-        driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
-    }
-
-    public static void closeAllBrowsers() {
-        logStringIntoConsole("......calling 'helper.SeleniumUtil.closeAllBrowsers' as test class completed.");
-
-        try {
-            if (!(driver == null)) {
-                Set<String> handles = driver.getWindowHandles();
-                Iterator<String> handleIt = handles.iterator();
-
-                while (handleIt.hasNext()) {
-                    String handle = handleIt.next();
-                    driver.switchTo().window(handle);
-                    DriverFactory.closeBrowser();
-                }
-            }
-
-            //killChromeDriver();
-        } catch (Exception e) {
-        }
-    }
 
     /**
      * Windows

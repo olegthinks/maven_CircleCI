@@ -14,7 +14,6 @@ import static org.testng.Assert.assertTrue;
  */
 public class APIInterrogator {
 
-
     public APIInterrogator() {
 
     }

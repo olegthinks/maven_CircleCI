@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import static helperClasses.SeleniumUtil.logError;
-import static helperClasses.SeleniumUtil.logStringIntoConsole;
+import static helperClasses.UtilityMethods.logError;
+import static helperClasses.UtilityMethods.logStringIntoConsole;
 
 
 public class DateUtil {
