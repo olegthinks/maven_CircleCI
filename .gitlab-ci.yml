@@ -1,3 +1,6 @@
+before_script:
+  - "sudo chmod 777 chromedriver"
+
 image: maven:3.5.3-jdk-8
 
 build_and_test:
