@@ -46,7 +46,7 @@ jobs:
             sudo wget https://chromedriver.storage.googleapis.com/2.31/chromedriver_linux64.zip
             sudo unzip chromedriver_linux64.zip
             sudo rm chromedriver_linux64.zip
-            sudo mv /home/circleci/circleCiTesting/src/test/resources/chromedriver.exe
+            sudo mv /home/circleci/circleCiTesting/src/test/resources/
             sudo chmod 777 /home/circleci/circleCiTesting/src/test/resources/chromedriver.exe
             sudo apt-get install libxi6 libgconf-2-4
             sudo apt-get -y install xvfb gtk2-engines-pixbuf
