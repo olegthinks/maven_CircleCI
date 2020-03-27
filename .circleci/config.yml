@@ -32,12 +32,14 @@ jobs:
             - v1-dependencies-
 
       - run: mvn dependency:go-offline
+          name: Resolve Maven Dependencies
 
       - run:
-          name: Install latest version of ChromeDriver Sample
+          name: Install latest version of Chrome
           command: |
-            sudo wget -q -O - https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-            sudo apt-get install ./google-chrome-stable_current_amd64.deb
+            sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+                     && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
+            sudo apt-get update && apt-get -y install google-chrome-stable
       - run:
           name: Use ChromeDriver found in repository
           command: |
