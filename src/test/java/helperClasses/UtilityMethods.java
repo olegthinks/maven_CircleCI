@@ -25,6 +25,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -574,5 +575,67 @@ public class UtilityMethods {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String encodeScreenshotBase64(String imgPath) {
+        String base64Img = "";
+
+        File inpFile = new File(imgPath);
+
+        try(FileInputStream imgInFile = new FileInputStream(inpFile)) {
+            byte[] imgData = new byte[(int) inpFile.length()];
+            imgInFile.read(imgData);
+            base64Img = Base64.getEncoder().encodeToString(imgData);
+
+        } catch (FileNotFoundException e) {
+            logError("The File is not found, in the embedScreenShotBase64 method of the ..");
+        } catch (IOException ioe) {
+            logError("The file is not readable, screenshot will not be available" + ioe );
+        }
+
+        logStringIntoConsole("Encode Screenshot: " + imgPath);
+        return base64Img;
+    }
+
+    /**
+     * Windows
+     */
+    public static void killChromeDriver() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        // Windows
+        System.out.println();
+        processBuilder.command("cmd.exe", "/c", "taskkill /F /IM chromedriver.exe /T");
+
+        try {
+            Process process = processBuilder.start();
+
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            int exitCode = process.waitFor();
+            System.out.println("\nExited with error code : " + exitCode);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String addDate(final String currTestName) {
+        Date myDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM_dd_yy-HH.mm.ss");
+        return currTestName + "-" + sdf.format(myDate);
+    }
+
+    public static String addDate() {
+        Date myDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("MM_dd_yy-HH.mm.ss");
+        return sdf.format(myDate);
     }
 }
